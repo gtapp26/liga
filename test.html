@@ -1,165 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>GT IPTV - Bienvenido</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Streams</title>
 
-<!-- Fuente optimizada -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Bloqueo visual para escritorio */
+    @media (min-width: 768px) {
+      body::before {
+        content: 'Sitio disponible solo en dispositivos móviles';
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(180deg, #A90033, #410536);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        text-align: center;
+        z-index: 9999;
+      }
+    }
 
-<style>
-:root{
-  --bg1:#A90033;
-  --bg2:#410536;
-  --accent:#28a745;
-}
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(180deg, #A90033, #410536);
+      padding: 8px 0;
+    }
 
-*{
-  box-sizing:border-box;
-}
+    .wrapper {
+      max-width: 195px; /* más angosto para no cubrir toda la pantalla */
+      margin: 0 auto;
+    }
 
-html,body{
-  margin:0;
-  padding:0;
-}
+    .card {
+      background: #ffffff;
+      border-radius: 4px;
+      padding: 8px;
+      margin: 0 auto 22px auto; /* espacio lateral visible */
+      text-align: center;
+      text-decoration: none;
+      display: block;
+    }
 
-body{
-  min-height:100vh;
-  font-family:'Roboto',Arial,sans-serif;
-  background:linear-gradient(to bottom,var(--bg1),var(--bg2));
-  color:#fff;
-  text-align:center;
-  overflow-x:hidden;
-}
+    .card img {
+      width: 100%;
+      height: 82px; /* fuerza menor altura */
+      border-radius: 4px;
+      
+    }
 
-.app{
-  max-width:420px;
-  margin:0 auto;
-  padding:32px 16px 24px;
-}
+    .card span {
+      display: block;
+      margin-top: 0px;
+      font-weight: bold;
+      color: #780036;
+      font-size: 14px;
+    }
 
-.logo{
-  width:115px;
-  height:115px;
-  margin:20px auto;
-  animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.05)}
-}
-
-.message{
-  font-size:20px;
-  font-weight:700;
-  margin:12px 0;
-}
-
-.countdown{
-  font-size:26px;
-  margin-bottom:16px;
-}
-
-button{
-  padding:12px 40px;
-  font-size:18px;
-  font-weight:700;
-  border:none;
-  border-radius:12px;
-  color:#fff;
-}
-
-button:disabled{
-  background:#666;
-}
-
-button:not(:disabled){
-  background:var(--accent);
-}
-
-.ad-container{
-  margin:28px auto 16px;
-  width:100%;
-  max-width:360px;
-  background:rgba(0,0,0,.85);
-  border:3px solid var(--bg1);
-  border-radius:12px;
-  padding:8px;
-}
-
-.ad-container iframe{
-  max-width:100% !important;
-  position:static !important;
-}
-
-.close-btn{
-  float:right;
-  background:none;
-  border:none;
-  color:#fff;
-  font-size:18px;
-}
-</style>
+    .native-ad {
+      max-width: 290px;
+      margin: 20px auto 6px auto;
+      text-align: center;
+      background: transparent;
+    }
+    
+  </style>
 </head>
-
 <body>
 
-<div class="app">
-  <img class="logo" src="https://world-app.github.io/docs/2702606_ico.png" alt="GT IPTV">
+  <div class="wrapper">
 
-  <div class="message" id="message">Inicializando APP...</div>
-  <div class="countdown" id="countdown">8</div>
-  <button id="accessButton" disabled>Acceder</button>
+    <a href="go:st1" class="card">
+      <img src="https://world-app.github.io/docs/liga23.png" alt="Stream 1">
+      <span>La Liga Española (Opc.1)</span>
+    </a>
 
-  <!-- Anuncio nativo integrado en el flujo -->
-  <div class="ad-container" id="adContainer">
-    <button class="close-btn" id="closeAd">✕</button>
-    <script async data-cfasync="false" src="https://pl28715586.effectivegatecpm.com/1185b9cffcf74274525fba2510275b5d/invoke.js"></script>
-    <div id="container-1185b9cffcf74274525fba2510275b5d"></div>
+    <a href="go:st2" class="card">
+      <img src="https://world-app.github.io/docs/liga23.png" alt="Stream 2">
+      <span>La Liga Española (Opc.2)</span>
+    </a>
+
   </div>
-</div>
 
-<script>
-let countdown = 8;
-const messages = [
-  "Cargando módulos…",
-  "Conectando con servidores…",
-  "Presiona ACCEDER para continuar"
-];
-
-let msgIndex = 0;
-const msg = document.getElementById('message');
-const cd = document.getElementById('countdown');
-const btn = document.getElementById('accessButton');
-
-const timer = setInterval(()=>{
-  countdown--;
-  cd.textContent = countdown;
-
-  if(countdown % 3 === 0 && msgIndex < messages.length){
-    msg.textContent = messages[msgIndex++];
-  }
-
-  if(countdown <= 0){
-    clearInterval(timer);
-    cd.style.display='none';
-    btn.disabled = false;
-    document.querySelector('.logo').style.animation='none';
-  }
-},1000);
-
-btn.onclick = ()=>{
-  window.location.href = 'go:azplay';
-};
-
-document.getElementById('closeAd').onclick = ()=>{
-  document.getElementById('adContainer').style.display='none';
-};
-</script>
+  <div class="native-ad">
+    <script async="async" data-cfasync="false" src="https://pl28619336.effectivegatecpm.com/3847926b03ea459977518dbcd3d4b68b/invoke.js"></script>
+<div id="container-3847926b03ea459977518dbcd3d4b68b"></div>
+  
+  </div>
 
 </body>
 </html>
