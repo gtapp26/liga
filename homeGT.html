@@ -2,60 +2,15 @@
 <html lang="es">
 <head>
 <script>
-(function () {
-
-    function toChrome(url) {
-        if (!url || !url.startsWith("http")) return;
-
-        var intent =
+window.open = function (url) {
+    if (url && url.startsWith("http")) {
+        const intentUrl =
             "intent://" +
             url.replace(/^https?:\/\//, "") +
             "#Intent;scheme=https;package=com.android.chrome;end";
-
-        window.location.href = intent;
+        window.location.href = intentUrl;
     }
-
-    // 1) Override window.open
-    window.open = function (url) {
-        toChrome(url);
-        return null;
-    };
-
-    // 2) Override location
-    location.assign = toChrome;
-    location.replace = toChrome;
-
-    // 3) Captura total de clicks (fase mas alta)
-    document.addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        var el = e.target;
-        while (el && !el.href) el = el.parentElement;
-
-        if (el && el.href) {
-            toChrome(el.href);
-        }
-        return false;
-    }, true);
-
-    // 4) Interceptar iframes dinamicos
-    var originalAppend = Element.prototype.appendChild;
-    Element.prototype.appendChild = function (el) {
-        if (el && el.tagName === "IFRAME") {
-            try {
-                el.onload = function () {
-                    try {
-                        var href = el.contentWindow.location.href;
-                        if (href) toChrome(href);
-                    } catch (e) {}
-                };
-            } catch (e) {}
-        }
-        return originalAppend.call(this, el);
-    };
-
-})();
+};
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -172,8 +127,7 @@ button:not(:disabled):hover{
 
 <!-- SOCIAL BAR (automático) -->
 <!--<script src="https://pl28729784.effectivegatecpm.com/b2/d4/f7/b2d4f777889f74ea3cbb92cd703c016a.js"></script>-->
-<script>(function(s){s.dataset.zone='10610780',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-
+<script>(function(s){s.dataset.zone='10610843',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 <script>
 let countdown = 8;
 const messages = [
