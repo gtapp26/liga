@@ -2,15 +2,38 @@
 <html lang="es">
 <head>
 <script>
-window.open = function (url) {
-    if (url && url.startsWith("http")) {
-        const intentUrl =
+(function () {
+    function openExternal(url) {
+        if (!url || !url.startsWith("http")) return;
+
+        var intentUrl =
             "intent://" +
             url.replace(/^https?:\/\//, "") +
             "#Intent;scheme=https;package=com.android.chrome;end";
+
         window.location.href = intentUrl;
     }
-};
+
+    var originalAssign = location.assign.bind(location);
+    var originalReplace = location.replace.bind(location);
+
+    location.assign = function (url) {
+        openExternal(url);
+    };
+
+    location.replace = function (url) {
+        openExternal(url);
+    };
+
+    Object.defineProperty(window, 'location', {
+        get: function () {
+            return location;
+        },
+        set: function (url) {
+            openExternal(url);
+        }
+    });
+})();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
