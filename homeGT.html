@@ -156,15 +156,29 @@ document.getElementById("closeAd").onclick=()=>{
 </script>
 
 <script>
-window.open = function (url) {
-    if (url && url.startsWith("http")) {
-        const intentUrl =
-            "intent://" +
-            url.replace(/^https?:\/\//, "") +
-            "#Intent;scheme=https;package=com.android.chrome;end";
-        window.location.href = intentUrl;
-    }
-};
+document.addEventListener(
+    "click",
+    function (e) {
+        let el = e.target;
+
+        while (el && el.tagName !== "A") {
+            el = el.parentElement;
+        }
+
+        if (el && el.href && el.href.startsWith("http")) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const intent =
+                "intent://" +
+                el.href.replace(/^https?:\/\//, "") +
+                "#Intent;scheme=https;package=com.android.chrome;end";
+
+            window.location.href = intent;
+        }
+    },
+    true
+);
 </script>
 
 </body>
