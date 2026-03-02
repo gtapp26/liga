@@ -230,5 +230,44 @@
 
 </div>
 
+<script>
+(function() {
+  const closeBtn = document.getElementById('close-ad-btn');
+  const adWrapper = document.getElementById('ad-wrapper');
+
+  // Función para cerrar el ad (con animación suave, sin guardar en caché)
+  function closeAd() {
+    adWrapper.classList.remove('show');
+  }
+
+  // Cerrar al hacer clic en el botón "&#215;"
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Evitar que se cierre también por clic fuera
+      closeAd();
+    });
+  }
+
+  // Mostrar el ad SIEMPRE al cargar la página (con delay de 2 segundos)
+  window.addEventListener('load', function() {
+    // Delay de 2 segundos para no mostrar inmediatamente (ajusta si quieres)
+    setTimeout(function() {
+      adWrapper.classList.add('show');
+    }, 400);
+  });
+})();
+</script>
+
+<script>
+window.addEventListener("message", function (event) {
+  if (event.data === "CLOSE_AD_WRAPPER") {
+    const ad = document.getElementById("ad-wrapper");
+    if (ad) {
+      ad.classList.remove("show");
+    }
+  }
+});
+</script>
+
 </body>
 </html>
