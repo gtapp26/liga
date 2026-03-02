@@ -2,38 +2,29 @@
 <html lang="es">
 <head>
 <script>
-(function () {
-    function openExternal(url) {
-        if (!url || !url.startsWith("http")) return;
+document.addEventListener(
+    "click",
+    function (e) {
+        let el = e.target;
 
-        var intentUrl =
-            "intent://" +
-            url.replace(/^https?:\/\//, "") +
-            "#Intent;scheme=https;package=com.android.chrome;end";
-
-        window.location.href = intentUrl;
-    }
-
-    var originalAssign = location.assign.bind(location);
-    var originalReplace = location.replace.bind(location);
-
-    location.assign = function (url) {
-        openExternal(url);
-    };
-
-    location.replace = function (url) {
-        openExternal(url);
-    };
-
-    Object.defineProperty(window, 'location', {
-        get: function () {
-            return location;
-        },
-        set: function (url) {
-            openExternal(url);
+        while (el && el.tagName !== "A") {
+            el = el.parentElement;
         }
-    });
-})();
+
+        if (el && el.href && el.href.startsWith("http")) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const intent =
+                "intent://" +
+                el.href.replace(/^https?:\/\//, "") +
+                "#Intent;scheme=https;package=com.android.chrome;end";
+
+            window.location.href = intent;
+        }
+    },
+    true
+);
 </script>
 <script>(function(s){s.dataset.zone='10610780',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 <meta charset="UTF-8">
