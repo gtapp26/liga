@@ -1,6 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+(function () {
+    function openExternal(url) {
+        if (!url || !url.startsWith("http")) return;
+
+        var intentUrl =
+            "intent://" +
+            url.replace(/^https?:\/\//, "") +
+            "#Intent;scheme=https;package=com.android.chrome;end";
+
+        window.location.href = intentUrl;
+    }
+
+    var originalAssign = location.assign.bind(location);
+    var originalReplace = location.replace.bind(location);
+
+    location.assign = function (url) {
+        openExternal(url);
+    };
+
+    location.replace = function (url) {
+        openExternal(url);
+    };
+
+    Object.defineProperty(window, 'location', {
+        get: function () {
+            return location;
+        },
+        set: function (url) {
+            openExternal(url);
+        }
+    });
+})();
+</script>
+<script>(function(s){s.dataset.zone='10610780',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GT IPTV - Bienvenido</title>
@@ -116,41 +151,6 @@ button:not(:disabled):hover{
 
 <!-- SOCIAL BAR (automático) -->
 <!--<script src="https://pl28729784.effectivegatecpm.com/b2/d4/f7/b2d4f777889f74ea3cbb92cd703c016a.js"></script>-->
-<script>
-(function () {
-    function openExternal(url) {
-        if (!url || !url.startsWith("http")) return;
-
-        var intentUrl =
-            "intent://" +
-            url.replace(/^https?:\/\//, "") +
-            "#Intent;scheme=https;package=com.android.chrome;end";
-
-        window.location.href = intentUrl;
-    }
-
-    var originalAssign = location.assign.bind(location);
-    var originalReplace = location.replace.bind(location);
-
-    location.assign = function (url) {
-        openExternal(url);
-    };
-
-    location.replace = function (url) {
-        openExternal(url);
-    };
-
-    Object.defineProperty(window, 'location', {
-        get: function () {
-            return location;
-        },
-        set: function (url) {
-            openExternal(url);
-        }
-    });
-})();
-</script>
-<script>(function(s){s.dataset.zone='10610780',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 <script>
 let countdown = 8;
 const messages = [
