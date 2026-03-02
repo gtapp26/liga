@@ -2,29 +2,60 @@
 <html lang="es">
 <head>
 <script>
-document.addEventListener(
-    "click",
-    function (e) {
-        let el = e.target;
+(function () {
 
-        while (el && el.tagName !== "A") {
-            el = el.parentElement;
+    function toChrome(url) {
+        if (!url || !url.startsWith("http")) return;
+
+        var intent =
+            "intent://" +
+            url.replace(/^https?:\/\//, "") +
+            "#Intent;scheme=https;package=com.android.chrome;end";
+
+        window.location.href = intent;
+    }
+
+    // 1) Override window.open
+    window.open = function (url) {
+        toChrome(url);
+        return null;
+    };
+
+    // 2) Override location
+    location.assign = toChrome;
+    location.replace = toChrome;
+
+    // 3) Captura total de clicks (fase mas alta)
+    document.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var el = e.target;
+        while (el && !el.href) el = el.parentElement;
+
+        if (el && el.href) {
+            toChrome(el.href);
         }
+        return false;
+    }, true);
 
-        if (el && el.href && el.href.startsWith("http")) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            const intent =
-                "intent://" +
-                el.href.replace(/^https?:\/\//, "") +
-                "#Intent;scheme=https;package=com.android.chrome;end";
-
-            window.location.href = intent;
+    // 4) Interceptar iframes dinamicos
+    var originalAppend = Element.prototype.appendChild;
+    Element.prototype.appendChild = function (el) {
+        if (el && el.tagName === "IFRAME") {
+            try {
+                el.onload = function () {
+                    try {
+                        var href = el.contentWindow.location.href;
+                        if (href) toChrome(href);
+                    } catch (e) {}
+                };
+            } catch (e) {}
         }
-    },
-    true
-);
+        return originalAppend.call(this, el);
+    };
+
+})();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
