@@ -48,11 +48,77 @@
     }
 
     .native-ad {
-      max-width: 290px;
+      max-width: 300px;
       margin: 20px auto 6px auto;
       text-align: center;
       background: transparent;
     }
+
+/* Estilos para el div flotante de publicidad (nuevo: flotante, transparente) */
+#ad-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.95); /* Fondo semi-transparente negro */
+    z-index: 10000; /* Alto para superponerse al header y popups */
+    width: 340px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    transition: opacity var(--transition-speed), transform var(--transition-speed);
+    opacity: 0; /* Oculto inicialmente */
+    visibility: hidden;
+}
+
+#ad-wrapper.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#ad-iframe {
+    background: var(--color-card-bg); /* Fondo que coincida con el tema */
+    width: 90%;
+    height: 90%;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#close-ad-btn {
+    padding:0 !important;
+    line-height:1;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--red-btn-bg);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10001; /* Sobre el iframe */
+    transition: background-color var(--transition-speed);
+    }
+
+#close-ad-btn:hover,
+#close-ad-btn:focus {
+    background-color: var(--red-btn-bg-hover);
+    outline: none;
+}
+:root{
+  --radius: 12px;
+  --red-btn-bg: #ef4444;
+  --red-btn-bg-hover: #b91c1c;
+  --transition-speed: 0.3s;
+}
     
   </style>
 </head>
@@ -83,10 +149,126 @@
   </div>
 
   <div class="native-ad">
-    <script async="async" data-cfasync="false" src="https://pl28717094.effectivegatecpm.com/8264580440c573e197aac0b93f53b074/invoke.js"></script>
+    <script async="async" data-cfasync="false" src="https://sturgeonvelocity.com/8264580440c573e197aac0b93f53b074/invoke.js"></script>
 <div id="container-8264580440c573e197aac0b93f53b074"></div>
     
   </div>
+
+<!-- Div flotante para publicidad (mantenido y ajustado al final del body) -->
+<div id="ad-wrapper">
+<button id="close-ad-btn" aria-label="Cerrar publicidad">&#215;</button>
+<iframe id="ad-iframe" srcdoc='
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+    html, body {
+    margin: 0; padding: 0; height: 100%; overflow: hidden; background: transparent;
+    }
+    #container-adsterra {
+    width: 100%; height: 100%; box-sizing: border-box;
+    }
+</style>
+</head>
+<body>
+<div style="
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #cccccc;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+">
+  Ad Unit.
+</div>
+        
+<div id="container-adsterra"></div>
+<script type="text/javascript" src="//sturgeonvelocity.com/c0/fa/b1/c0fab117c3bc319fb642565de68be6e9.js"></script>
+
+<script>
+(function () {
+
+  function openExternal(url) {
+    if (!url || !url.startsWith("http")) return;
+
+    const intentUrl =
+      "intent://" +
+      url.replace(/^https?:\/\//, "") +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+
+    // Avisar al documento padre que cierre el recuadro flotante
+    window.parent.postMessage("CLOSE_AD_WRAPPER", "*");
+
+    // Abrir Chrome desde el contexto superior
+    window.top.location.href = intentUrl;
+  }
+
+  // Interceptar window.open (usado por Social Bar)
+  window.open = function (url) {
+    openExternal(url);
+    return null;
+  };
+
+  // Interceptar clics en enlaces <a>
+  document.addEventListener("click", function (e) {
+    const a = e.target.closest("a");
+    if (a && a.href && a.href.startsWith("http")) {
+      e.preventDefault();
+      openExternal(a.href);
+    }
+  }, true);
+
+})();
+</script>
+</body>
+</html>
+' frameborder="0" allowtransparency="true" scrolling="no" style="width: 100%; height: 100%; border: none;"></iframe>
+</div>
+
+<script>
+(function() {
+  const closeBtn = document.getElementById('close-ad-btn');
+  const adWrapper = document.getElementById('ad-wrapper');
+
+  // Función para cerrar el ad (con animación suave, sin guardar en caché)
+  function closeAd() {
+    adWrapper.classList.remove('show');
+  }
+
+  // Cerrar al hacer clic en el botón "&#215;"
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Evitar que se cierre también por clic fuera
+      closeAd();
+    });
+  }
+
+  // Mostrar el ad SIEMPRE al cargar la página (con delay de 2 segundos)
+  window.addEventListener('load', function() {
+    // Delay de 2 segundos para no mostrar inmediatamente (ajusta si quieres)
+    setTimeout(function() {
+      adWrapper.classList.add('show');
+    }, 400);
+  });
+})();
+</script>
+
+<script>
+window.addEventListener("message", function (event) {
+  if (event.data === "CLOSE_AD_WRAPPER") {
+    const ad = document.getElementById("ad-wrapper");
+    if (ad) {
+      ad.classList.remove("show");
+    }
+  }
+});
+</script>
 
 </body>
 </html>
